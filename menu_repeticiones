@@ -1,1 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<items>
+<item>
+<title>[B][COLOR red]•[/COLOR]  [COLOR white]NECESARIO [/COLOR]        [COLOR red]ELEMENTUM  [/COLOR][/B]</title>
+<link>$doregex[makelist2]</link>
+<thumbnail>https://i.imgur.com/z2TwgHJ.png</thumbnail>
+<fanart>https://i.imgur.com/NS1WF7C.jpg</fanart>
+</item>
+
+
+<item>
+<title>[B][COLOR red]•[/COLOR]  [COLOR white]FORMULA 1[/COLOR]  [COLOR red]2024[/COLOR][/B]</title>
+<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
+<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
+<link>http://ignoreme</link>
+<externallink>https://raw.githubusercontent.com/830NY/Tacones/main/formula_24</externallink>
+</item> 
+
+
+<item>
+<title>[B][COLOR red]•[/COLOR]  [COLOR white]MOTO GP [/COLOR]  [COLOR red]    2024[/COLOR][/B]</title>
+<thumbnail>https://i.imgur.com/4XQ2U5d.png</thumbnail>
+<fanart>https://i.imgur.com/5i9xESb.jpg</fanart>
+<link>http://ignoreme</link>
+<externallink>https://raw.githubusercontent.com/830NY/Tacones/main/gp_24</externallink>
+</item>
+
+<item>
+<title>[B][COLOR red]•[/COLOR]  [COLOR white]FORMULA 1[/COLOR]  [COLOR red]2023[/COLOR][/B]</title>
+<thumbnail>https://i.imgur.com/BrB93o0.png</thumbnail>
+<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
+<link>http://ignoreme</link>
+<externallink>https://raw.githubusercontent.com/830NY/Tacones/main/formula_23</externallink>
+</item> 
+
+<item>
+<title>[B][COLOR red]•[/COLOR]  [COLOR white]MOTO GP [/COLOR]  [COLOR red]    2023[/COLOR][/B]</title>
+<thumbnail>https://i.imgur.com/mSkXiky.png</thumbnail>
+<fanart>https://i.imgur.com/5i9xESb.jpg</fanart>
+<link>http://ignoreme</link>
+<externallink>https://raw.githubusercontent.com/830NY/Tacones/main/gp_23</externallink>
+</item>
+
+<item>
+<title>[B][COLOR red]•[/COLOR]  [COLOR white]UFC 298 [/COLOR]  [COLOR red]    Volkanovski vs Topuria 17/02/24[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:804ea6365d464aa778c87bbef1f809adf28ffae9</link>
+<thumbnail>https://toppng.com/uploads/preview/ufc-logo-2-ufc-ultimate-fighting-championshi-11563075396l0znixu7hp.png</thumbnail>
+<fanart>https://www.hondacenter.com/media/4576/ufc_298_750x430_web.jpg</fanart>
+</item>
+
+</items> 
 
