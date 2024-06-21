@@ -250,7 +250,6 @@ def GetLSProData(page_data, Cookie_Jar, m):
 </regex>
 
 </item>
-
 <item>
  Created by Someone Like You 
 <title>[COLOR white]•[/COLOR] [B][COLOR red]BUSCADOR[/COLOR][/B]</title>
@@ -260,73 +259,71 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <listrepeat><![CDATA[
 <title>[COLOR red]•[/COLOR] [B][COLOR white][results.param1][/COLOR][/B]</title>
 <link>$doregex[selectionLinks]</link>
-<year>[results.param2]</year>
-<genre>[results.param3]</genre>
-<info>[results.param4]</info>
-<thumbnail>[results.param5]</thumbnail>
-<fanart>[results.param6]</fanart>
+<year>[results.param4]</year>
+<genre>[results.param5]</genre>
+<info>[results.param6]</info>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>[results.param3]</fanart>
 ]]></listrepeat>
 <expres><![CDATA[#$pyFunction
-def GetLSProData(page_data,Cookie_Jar,m):
-    import xbmc, xbmcgui
+
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmcgui
     import requests
-    import json
+    import re
     import difflib
-    from xml.etree import ElementTree
-    data = requests.get('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml').text
-    xml = ElementTree.fromstring(data)
-    inputText = xbmcgui.Dialog().input('Buscar Pelicula: ', type=xbmcgui.INPUT_ALPHANUM).upper()
-    
-    def getLinks(item):
-        links = dict()
-        for k, v in item.items():
-            if len(v) == 40:
-                links.update({k: v})
-        return links
+    from bs4 import BeautifulSoup
+    VALID_TAGS = ['title', 'thumbnail', 'fanart',
+                  'date', 'genre', 'info', 'links']
 
-    def parseJSON(data):
-        results = list()
-        for item in list(sorted(json.loads(data), key=lambda x: x['ratio'], reverse=True)):
-            film = item['item']
-            links = getLinks(film)
-            if not links: continue
-            results.append((film.get('title'), film.get('date'),
-                        film.get('genre'), film.get('info'), film.get('thumbnail'), film.get('fanart'),
-                        str(links)))
-        return results
+    matches = list()
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml')
+    soup = BeautifulSoup(data, "html5lib")
 
-    def getResults(items):
-        results = list()
-        for item in items:
-            title = item.find('title').text.upper()
-            ratio = 100 if inputText in title.upper() else difflib.SequenceMatcher(
-                None, title, inputText).ratio() * 100
-            if ratio < 60: continue 
-            newitem = dict()
-            for elem in item.iter():
-                if elem.tag == 'item':
-                    continue
-                newitem.update({elem.tag: elem.text})
-            results.append({'ratio': ratio, 'item': newitem})
-        return results
-    return parseJSON(json.dumps(list(sorted(getResults(xml.findall('item')),
-                                key=lambda x: x['ratio'], reverse=True))))
+    inputText = xbmcgui.Dialog().input(
+        'Buscar Pelicula: ', type=xbmcgui.INPUT_ALPHANUM).upper()
+
+    for item in list(filter(lambda item: item.find('title') is not None, soup.find_all("item"))):
+        title = item.find('title').text.upper()
+        ratio = 100 if inputText in title.upper() else difflib.SequenceMatcher(
+            None, title, inputText).ratio() * 100
+        if ratio < 60:
+            continue
+        data = dict()
+        links = list()
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                links.append({child.name: child.text})
+            elif (child.name in VALID_TAGS):
+                data[child.name] = child.text
+
+        if len(links) == 0:
+            continue
+        data['links'] = str(links)
+        matches.append(tuple(
+            dict(sorted(data.items(), key=lambda x: VALID_TAGS.index(x[0]))).values()))
+    return list(sorted(matches, key=lambda film: film[0]))
 ]]></expres>
 <page></page>
 </regex>
 <regex>
 <name>selectionLinks</name>
 <expres><![CDATA[#$pyFunction
-def GetLSProData(page_data,Cookie_Jar,m):
-    import xbmcgui, xbmc
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmcgui
+    import xbmcaddon
+    ADDON = xbmcaddon.Addon()
     dialog = xbmcgui.Dialog()
-    links = [results.param7]
-    option = 0 
+    links = {key: value for dictionary in [results.param7] for key,
+             value in dictionary.items()}
+    option = 0
     if len(links) > 1:
-        option = dialog.select('Seleccione Calidad:', [quality.replace('microhd','Micro HD').replace('fullhd','Full HD').replace('tresd','3D').replace('cuatrok','4K') for quality in links.keys()])
+        option = dialog.select('Seleccione Calidad:', [quality.replace('microhd', 'Micro HD').replace(
+            'fullhd', 'Full HD').replace('tresd', '3D').replace('cuatrok', '4K') for quality in links.keys()])
         if option == -1:
-            return 
+            return xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), "Selección cancelada", ADDON.getAddonInfo('icon'))
     return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + list(links.values())[option]
+
 ]]></expres>
 <page></page>
 </regex>
@@ -335,33 +332,66 @@ def GetLSProData(page_data,Cookie_Jar,m):
 </item>
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]TODAS[/COLOR][COLOR white]              (A-Z)[/COLOR][/B]</title>
-<link>$doregex[index]</link>
+<link>$doregex[results]</link>
 <regex>
-<name>index</name>
+<name>results</name>
 <listrepeat><![CDATA[
-<title>[COLOR red]•[/COLOR] [B][COLOR white][index.param1][/COLOR][COLOR red] ([index.param8] | [index.param9])[/COLOR][/B]</title>
-<link>$doregex[gestor]</link>
-<year>[index.param8]</year>
-<genre>[index.param9]</genre>
-<info>[index.param11]</info>
-<thumbnail>[index.param6]</thumbnail>
-<fanart>[index.param7]</fanart>
+<title>[COLOR red]•[/COLOR] [B][COLOR white][results.param1][/COLOR][/B]</title>
+<link>$doregex[selectionLinks]</link>
+<year>[results.param4]</year>
+<genre>[results.param5]</genre>
+<info>[results.param6]</info>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>[results.param3]</fanart>
 ]]></listrepeat>
-<expres>title.(.*)..title.\s*.microhd.(.*)..microhd.\s*.fullhd.(.*)..fullhd.\s*.tresd.(.*)..tresd.\s*.cuatrok.(.*)..cuatrok.\s*.thumbnail.(.*)..thumbnail.\s*.fanart.(.*)..fanart.\s*.date.(.*)..date.\s*.genre.(.*)..genre.\s*.extra.(.*)..extra.\s*.info.(.*)..info.</expres>
-<page>https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml</page>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    LENGTH_MAGNET = [32, 40]
+    VALID_TAGS = ['title', 'thumbnail', 'fanart',
+                  'date', 'genre', 'info', 'links']
+
+    matches = list()
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in soup.find_all("item"):
+        data = dict()
+        links = list()
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                links.append({child.name: child.text})
+            elif (child.name in VALID_TAGS):
+                data[child.name] = child.text
+
+        if len(links) == 0:
+            continue
+        data['links'] = str(links)
+        matches.append(tuple(
+            dict(sorted(data.items(), key=lambda x: VALID_TAGS.index(x[0]))).values()))
+    return list(sorted(matches, key=lambda film: film[0]))
+]]></expres>
+<page></page>
 </regex>
 <regex>
-<name>gestor</name>
+<name>selectionLinks</name>
 <expres><![CDATA[#$pyFunction
-def GetLSProData(page_data,Cookie_Jar,m):
- calidad = '[index.param2]', '[index.param3]', '[index.param4]', '[index.param5]'
- for x in calidad:
-    if x != 'NA':
-        calidad == x
-        break
-    else:
-        x = ''
- return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + x
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmcgui
+    import xbmcaddon
+    ADDON = xbmcaddon.Addon()
+    dialog = xbmcgui.Dialog()
+    links = {key: value for dictionary in [results.param7] for key,
+             value in dictionary.items()}
+    option = 0
+    if len(links) > 1:
+        option = dialog.select('Seleccione Calidad:', [quality.replace('microhd', 'Micro HD').replace(
+            'fullhd', 'Full HD').replace('tresd', '3D').replace('cuatrok', '4K') for quality in links.keys()])
+        if option == -1:
+            return xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), "Selección cancelada", ADDON.getAddonInfo('icon'))
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + list(links.values())[option]
+
 ]]></expres>
 <page></page>
 </regex>
@@ -372,134 +402,498 @@ def GetLSProData(page_data,Cookie_Jar,m):
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]CALIDAD[/COLOR][COLOR white]          MICROHD, BDRIP, 3D, 4K[/COLOR][/B]</title>
-<link>http://ignoreme</link>
-<externallink>https://raw.githubusercontent.com/830NY/Tacones/main/cine_calidad</externallink>
 <thumbnail>https://i.imgur.com/3I3skgB.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+<link>$doregex[qualities]</link>
+<regex>
+<name>qualities</name>
+<listrepeat><![CDATA[
+<title>[COLOR red]•[/COLOR] [B][COLOR white][qualities.param2][/COLOR][/B]</title>
+<link>$doregex[results]</link>
+<thumbnail>https://i.imgur.com/3I3skgB.png</thumbnail>
+<fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    qualities = list()
+
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in soup.find_all("item"):
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                if child.name not in qualities:
+                    qualities.append(child.name)
+
+    return list(sorted([(quality, quality.replace('microhd', 'Micro HD').replace(
+        'fullhd', 'Full HD').replace('tresd', '3D').replace('cuatrok', '4K')) for quality in qualities], key=lambda quality: quality[1]))
+
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>results</name>
+<listrepeat><![CDATA[
+<title>[COLOR red]•[/COLOR] [B][COLOR white][results.param1][/COLOR][/B]</title>
+<link>$doregex[selectionLinks]</link>
+<year>[results.param4]</year>
+<genre>[results.param5]</genre>
+<info>[results.param6]</info>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>[results.param3]</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    quality = "[qualities.param1]"
+    VALID_TAGS = ['title', 'thumbnail', 'fanart',
+                  'date', 'genre', 'info', 'links']
+
+    matches = list()
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in list(filter(lambda it: it.find(quality) is not None and re.match(
+            r'^[0-9a-fA-F]{40}$', it.find(quality).text), soup.find_all("item"))):
+        data = dict()
+        links = list()
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                links.append({child.name: child.text})
+            elif (child.name in VALID_TAGS):
+                data[child.name] = child.text
+
+        if len(links) == 0:
+            continue
+        data['links'] = str(links)
+        matches.append(tuple(
+            dict(sorted(data.items(), key=lambda x: VALID_TAGS.index(x[0]))).values()))
+    return list(sorted(matches, key=lambda film: film[0]))
+
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    links = {key: value for dictionary in [results.param7] for key,
+             value in dictionary.items()}
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + links.get("[qualities.param1]")
+
+]]></expres>
+<page></page>
+</regex>
 </item>
 
+
 <item>
-<title>[COLOR white]•[/COLOR] [B][COLOR red]AÑO[/COLOR][COLOR white]                   2017 - 2024[/COLOR][/B]</title>
-<link>http://ignoreme</link>
-<externallink>https://raw.githubusercontent.com/830NY/Tacones/main/cine_year</externallink>
+<title>[COLOR white]•[/COLOR] [B][COLOR red]AÑO[/COLOR][/B]</title>
 <thumbnail>https://i.imgur.com/eyTvbyC.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+<link>$doregex[years]</link>
+<regex>
+<name>years</name>
+<listrepeat><![CDATA[
+<title>[COLOR red]•[/COLOR] [B][COLOR white][years.param1][/COLOR][/B]</title>
+<link>$doregex[results]</link>
+<thumbnail>https://i.imgur.com/eyTvbyC.png</thumbnail>
+<fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    years = list()
+
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in soup.find_all("item"):
+        date = item.find('date')
+        if date is not None:
+            if item.find('date').text not in years:
+                years.append(item.find('date').text)
+    return list(sorted(years))
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>results</name>
+<listrepeat><![CDATA[
+<title>[COLOR red]•[/COLOR] [B][COLOR white][results.param1][/COLOR][/B]</title>
+<link>$doregex[selectionLinks]</link>
+<year>[results.param4]</year>
+<genre>[results.param5]</genre>
+<info>[results.param6]</info>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>[results.param3]</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    year = "[years.param1]"
+    VALID_TAGS = ['title', 'thumbnail', 'fanart',
+                  'date', 'genre', 'info', 'links']
+
+    matches = list()
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in list(filter(lambda it: it.find("date") is not None and it.find("date").text == year, soup.find_all("item"))):
+        data = dict()
+        links = list()
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                links.append({child.name: child.text})
+            elif (child.name in VALID_TAGS):
+                data[child.name] = child.text
+
+        if len(links) == 0:
+            continue
+        data['links'] = str(links)
+        matches.append(tuple(
+            dict(sorted(data.items(), key=lambda x: VALID_TAGS.index(x[0]))).values()))
+    return list(sorted(matches, key=lambda film: film[0]))
+
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmcgui
+    import xbmcaddon
+    ADDON = xbmcaddon.Addon()
+    dialog = xbmcgui.Dialog()
+    links = {key: value for dictionary in [results.param7] for key,
+             value in dictionary.items()}
+    option = 0
+    if len(links) > 1:
+        option = dialog.select('Seleccione Calidad:', [quality.replace('microhd', 'Micro HD').replace(
+            'fullhd', 'Full HD').replace('tresd', '3D').replace('cuatrok', '4K') for quality in links.keys()])
+        if option == -1:
+            return xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), "Selección cancelada", ADDON.getAddonInfo('icon'))
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + list(links.values())[option]
+
+]]></expres>
+<page></page>
+</regex>
 </item>
+
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]GENERO[/COLOR][COLOR white]           ACCION, DRAMA, SAGAS, ...[/COLOR][/B]</title> 
-<link>http://ignoreme</link>
-<externallink>https://raw.githubusercontent.com/830NY/Tacones/main/cine_genero</externallink>
 <thumbnail>https://i.imgur.com/E2xELih.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+<link>$doregex[genres]</link>
+<regex>
+<name>genres</name>
+<listrepeat><![CDATA[
+<title>[COLOR red]•[/COLOR] [B][COLOR white][genres.param1][/COLOR][/B]</title>
+<link>$doregex[results]</link>
+<thumbnail>https://i.imgur.com/eyTvbyC.png</thumbnail>
+<fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import unicodedata
+    from bs4 import BeautifulSoup
+    genres = list()
+
+    def strip_accents(s):
+        return ''.join(c for c in unicodedata.normalize('NFD', s)
+                       if unicodedata.category(c) != 'Mn')
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(strip_accents(data), "html5lib")
+    for item in soup.find_all("item"):
+        genreItem = item.find('genre')
+        if genreItem is not None:
+            for genre in [genre.strip() for genre in genreItem.text.split('.')]:
+                if not genre in genres:
+                    genres.append(genre)
+    return list(filter(lambda item: item and item != 'NA', sorted(genres)))
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>results</name>
+<listrepeat><![CDATA[
+<title>[COLOR red]•[/COLOR] [B][COLOR white][results.param1][/COLOR][/B]</title>
+<link>$doregex[selectionLinks]</link>
+<year>[results.param4]</year>
+<genre>[results.param5]</genre>
+<info>[results.param6]</info>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>[results.param3]</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    genre = "[genres.param1]"
+    VALID_TAGS = ['title', 'thumbnail', 'fanart',
+                  'date', 'genre', 'info', 'links']
+
+    matches = list()
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in list(filter(lambda it: it.find("genre") is not None and genre in it.find("genre").text, soup.find_all("item"))):
+        data = dict()
+        links = list()
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                links.append({child.name: child.text})
+            elif (child.name in VALID_TAGS):
+                data[child.name] = child.text
+
+        if len(links) == 0:
+            continue
+        data['links'] = str(links)
+        matches.append(tuple(
+            dict(sorted(data.items(), key=lambda x: VALID_TAGS.index(x[0]))).values()))
+    return list(sorted(matches, key=lambda film: film[0]))
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmcgui
+    import xbmcaddon
+    ADDON = xbmcaddon.Addon()
+    dialog = xbmcgui.Dialog()
+    links = {key: value for dictionary in [results.param7] for key,
+             value in dictionary.items()}
+    option = 0
+    if len(links) > 1:
+        option = dialog.select('Seleccione Calidad:', [quality.replace('microhd', 'Micro HD').replace(
+            'fullhd', 'Full HD').replace('tresd', '3D').replace('cuatrok', '4K') for quality in links.keys()])
+        if option == -1:
+            return xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), "Selección cancelada", ADDON.getAddonInfo('icon'))
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + list(links.values())[option]
+
+]]></expres>
+<page></page>
+</regex>
 </item>
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]CINE DE[/COLOR]    [COLOR white]        CULTO[/COLOR][/B]</title>
-<link>$doregex[index]</link>
-<regex>
-<name>index</name>
-<listrepeat><![CDATA[
-<title>[COLOR red]•[/COLOR] [B][COLOR white][index.param1][/COLOR][COLOR red]  ([index.param8]| [index.param9])[/COLOR][/B]</title>
-<link>$doregex[gestor]</link>
-<year>[index.param8]</year>
-<genre>[index.param9]</genre>
-<info>[index.param11]</info>
-<thumbnail>[index.param6]</thumbnail>
-<fanart>[index.param7]</fanart>
-]]></listrepeat>
-<expres>title.(.*)..title.\s*.microhd.(.*)..microhd.\s*.fullhd.(.*)..fullhd.\s*.tresd.(.*)..tresd.\s*.cuatrok.(.*)..cuatrok.\s*.thumbnail.(.*)..thumbnail.\s*.fanart.(.*)..fanart.\s*.date.(.*)..date.\s*.genre.(.*)..genre.\s*.extra.*(Culto).*extra.\s*.info.(.*)..info.</expres>
-<page>https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml</page>
-</regex>
-<regex>
-<name>gestor</name>
-<expres><![CDATA[#$pyFunction
-def GetLSProData(page_data,Cookie_Jar,m):
- calidad = '[index.param2]', '[index.param3]', '[index.param4]', '[index.param5]'
- for x in calidad:
-    if x != 'NA':
-        calidad == x
-        break
-    else:
-        x = ''
- return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + x
-]]></expres>
-<page></page>
-</regex>
 <thumbnail>https://i.imgur.com/Hmc87sC.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
-</item>
-
-<item>
-<title>[COLOR white]•[/COLOR] [B][COLOR red]CINE DE[/COLOR]    [COLOR white]        ESTRENO[/COLOR][/B]</title>
-<link>$doregex[index]</link>
+<link>$doregex[results]</link>
 <regex>
-<name>index</name>
+<name>results</name>
 <listrepeat><![CDATA[
-<title>[COLOR red]•[/COLOR] [B][COLOR white][index.param1][/COLOR][COLOR red]  ([index.param8] | [index.param9])[/COLOR][/B]</title>
-<link>$doregex[gestor]</link>
-<year>[index.param8]</year>
-<genre>[index.param9]</genre>
-<info>[index.param11]</info>
-<thumbnail>[index.param6]</thumbnail>
-<fanart>[index.param7]</fanart>
+<title>[COLOR red]•[/COLOR] [B][COLOR white][results.param1][/COLOR][/B]</title>
+<link>$doregex[selectionLinks]</link>
+<year>[results.param4]</year>
+<genre>[results.param5]</genre>
+<info>[results.param6]</info>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>[results.param3]</fanart>
 ]]></listrepeat>
-<expres>title.(.*)..title.\s*.microhd.(.*)..microhd.\s*.fullhd.(.*)..fullhd.\s*.tresd.(.*)..tresd.\s*.cuatrok.(.*)..cuatrok.\s*.thumbnail.(.*)..thumbnail.\s*.fanart.(.*)..fanart.\s*.date.(.*)..date.\s*.genre.(.*)..genre.\s*.extra.*(Estreno).*extra.\s*.info.(.*)..info.</expres>
-<page>https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml</page>
-</regex>
-<regex>
-<name>gestor</name>
 <expres><![CDATA[#$pyFunction
-def GetLSProData(page_data,Cookie_Jar,m):
- calidad = '[index.param2]', '[index.param3]', '[index.param4]', '[index.param5]'
- for x in calidad:
-    if x != 'NA':
-        calidad == x
-        break
-    else:
-        x = ''
- return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + x
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    extra = "Culto"
+    VALID_TAGS = ['title', 'thumbnail', 'fanart',
+                  'date', 'genre', 'info', 'links']
+
+    matches = list()
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in list(filter(lambda it: it.find("extra") is not None and it.find("extra").text == extra, soup.find_all("item"))):
+        data = dict()
+        links = list()
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                links.append({child.name: child.text})
+            elif (child.name in VALID_TAGS):
+                data[child.name] = child.text
+
+        if len(links) == 0:
+            continue
+        data['links'] = str(links)
+        matches.append(tuple(
+            dict(sorted(data.items(), key=lambda x: VALID_TAGS.index(x[0]))).values()))
+    return list(sorted(matches, key=lambda film: film[0]))
+
 ]]></expres>
 <page></page>
 </regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmcgui
+    import xbmcaddon
+    ADDON = xbmcaddon.Addon()
+    dialog = xbmcgui.Dialog()
+    links = {key: value for dictionary in [results.param7] for key,
+             value in dictionary.items()}
+    option = 0
+    if len(links) > 1:
+        option = dialog.select('Seleccione Calidad:', [quality.replace('microhd', 'Micro HD').replace(
+            'fullhd', 'Full HD').replace('tresd', '3D').replace('cuatrok', '4K') for quality in links.keys()])
+        if option == -1:
+            return xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), "Selección cancelada", ADDON.getAddonInfo('icon'))
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + list(links.values())[option]
+
+]]></expres>
+<page></page>
+</regex>
+</item>
+<item>
+<title>[COLOR white]•[/COLOR] [B][COLOR red]CINE DE[/COLOR]    [COLOR white]        ESTRENO[/COLOR][/B]</title>
 <thumbnail>https://i.imgur.com/vX0Ycn6.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+<link>$doregex[results]</link>
+<regex>
+<name>results</name>
+<listrepeat><![CDATA[
+<title>[COLOR red]•[/COLOR] [B][COLOR white][results.param1][/COLOR][/B]</title>
+<link>$doregex[selectionLinks]</link>
+<year>[results.param4]</year>
+<genre>[results.param5]</genre>
+<info>[results.param6]</info>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>[results.param3]</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    extra = "Estreno"
+    VALID_TAGS = ['title', 'thumbnail', 'fanart',
+                  'date', 'genre', 'info', 'links']
+
+    matches = list()
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in list(filter(lambda it: it.find("extra") is not None and it.find("extra").text == extra, soup.find_all("item"))):
+        data = dict()
+        links = list()
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                links.append({child.name: child.text})
+            elif (child.name in VALID_TAGS):
+                data[child.name] = child.text
+
+        if len(links) == 0:
+            continue
+        data['links'] = str(links)
+        matches.append(tuple(
+            dict(sorted(data.items(), key=lambda x: VALID_TAGS.index(x[0]))).values()))
+    return list(sorted(matches, key=lambda film: film[0]))
+
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmcgui
+    import xbmcaddon
+    ADDON = xbmcaddon.Addon()
+    dialog = xbmcgui.Dialog()
+    links = {key: value for dictionary in [results.param7] for key,
+             value in dictionary.items()}
+    option = 0
+    if len(links) > 1:
+        option = dialog.select('Seleccione Calidad:', [quality.replace('microhd', 'Micro HD').replace(
+            'fullhd', 'Full HD').replace('tresd', '3D').replace('cuatrok', '4K') for quality in links.keys()])
+        if option == -1:
+            return xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), "Selección cancelada", ADDON.getAddonInfo('icon'))
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + list(links.values())[option]
+
+]]></expres>
+<page></page>
+</regex>
 </item>
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]CINE DE[/COLOR]    [COLOR white]        MISCELANEA[/COLOR][/B]</title>
-<link>$doregex[index]</link>
+<thumbnail>https://i.imgur.com/vIX7Cnq.png</thumbnail>
+<fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+<link>$doregex[results]</link>
 <regex>
-<name>index</name>
+<name>results</name>
 <listrepeat><![CDATA[
-<title>[COLOR red]•[/COLOR] [B][COLOR white][index.param1][/COLOR][COLOR red]  ([index.param8] | [index.param9])[/COLOR][/B]</title>
-<link>$doregex[gestor]</link>
-<year>[index.param8]</year>
-<genre>[index.param9]</genre>
-<info>[index.param11]</info>
-<thumbnail>[index.param6]</thumbnail>
-<fanart>[index.param7]</fanart>
+<title>[COLOR red]•[/COLOR] [B][COLOR white][results.param1][/COLOR][/B]</title>
+<link>$doregex[selectionLinks]</link>
+<year>[results.param4]</year>
+<genre>[results.param5]</genre>
+<info>[results.param6]</info>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>[results.param3]</fanart>
 ]]></listrepeat>
-<expres>title.(.*)..title.\s*.microhd.(.*)..microhd.\s*.fullhd.(.*)..fullhd.\s*.tresd.(.*)..tresd.\s*.cuatrok.(.*)..cuatrok.\s*.thumbnail.(.*)..thumbnail.\s*.fanart.(.*)..fanart.\s*.date.(.*)..date.\s*.genre.(.*)..genre.\s*.extra.*(Mis).*extra.\s*.info.(.*)..info.</expres>
-<page>https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml</page>
-</regex>
-<regex>
-<name>gestor</name>
 <expres><![CDATA[#$pyFunction
-def GetLSProData(page_data,Cookie_Jar,m):
- calidad = '[index.param2]', '[index.param3]', '[index.param4]', '[index.param5]'
- for x in calidad:
-    if x != 'NA':
-        calidad == x
-        break
-    else:
-        x = ''
- return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + x
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from bs4 import BeautifulSoup
+    extra = "Mis"
+    VALID_TAGS = ['title', 'thumbnail', 'fanart',
+                  'date', 'genre', 'info', 'links']
+
+    matches = list()
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    for item in list(filter(lambda it: it.find("extra") is not None and it.find("extra").text == extra, soup.find_all("item"))):
+        data = dict()
+        links = list()
+        for child in item.children:
+            if (child.name is not None and re.match(r'^[0-9a-fA-F]{40}$', child.text)):
+                links.append({child.name: child.text})
+            elif (child.name in VALID_TAGS):
+                data[child.name] = child.text
+
+        if len(links) == 0:
+            continue
+        data['links'] = str(links)
+        matches.append(tuple(
+            dict(sorted(data.items(), key=lambda x: VALID_TAGS.index(x[0]))).values()))
+    return list(sorted(matches, key=lambda film: film[0]))
+
 ]]></expres>
 <page></page>
 </regex>
-<thumbnail>https://i.imgur.com/vIX7Cnq.png</thumbnail>
-<fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmcgui
+    import xbmcaddon
+    ADDON = xbmcaddon.Addon()
+    dialog = xbmcgui.Dialog()
+    links = {key: value for dictionary in [results.param7] for key,
+             value in dictionary.items()}
+    option = 0
+    if len(links) > 1:
+        option = dialog.select('Seleccione Calidad:', [quality.replace('microhd', 'Micro HD').replace(
+            'fullhd', 'Full HD').replace('tresd', '3D').replace('cuatrok', '4K') for quality in links.keys()])
+        if option == -1:
+            return xbmcgui.Dialog().notification(ADDON.getAddonInfo('name'), "Selección cancelada", ADDON.getAddonInfo('icon'))
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + list(links.values())[option]
+
+]]></expres>
+<page></page>
+</regex>
 </item>
 </items>
   
