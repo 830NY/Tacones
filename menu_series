@@ -252,6 +252,8 @@ def GetLSProData(page_data, Cookie_Jar, m):
 </regex>
 
 </item>
+
+<item>
 <title>[COLOR white]•[/COLOR] [B][COLOR white]BUSCADOR[/COLOR][COLOR red]                 SERIES[/COLOR][/B]</title>
 <link>$doregex[results]</link>
 <regex>
@@ -267,27 +269,26 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></listrepeat>
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
-    import requests
     import difflib
     import xbmcgui
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
+    from bs4 import BeautifulSoup
     results = list()
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    inputText = xbmcgui.Dialog().input('Buscar Serie: ', type=xbmcgui.INPUT_ALPHANUM).upper()
+    data = makeRequest(
+        'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    inputText = xbmcgui.Dialog().input(
+        'Buscar Serie: ', type=xbmcgui.INPUT_ALPHANUM).upper().upper()
     if not inputText or inputText == '' or inputText == ' ':
         return []
-    series = xml.findall('serie')
+    series = soup.find_all('serie')
     results = list()
     filtered_series = list(filter(lambda serie:
-                                inputText in serie.find('title').text.upper()
-                                or (difflib.SequenceMatcher(None, serie.find('title').text.upper(), inputText).ratio() * 100) > 60, series))
-
+                                  inputText in serie.find('title').text.upper()
+                                  or (difflib.SequenceMatcher(None, serie.find('title').text.upper(), inputText).ratio() * 100) > 60, series))
     METADATA_KEYS = ['title', 'info', 'year', 'genre', 'thumb', 'fanart']
     for serie in filtered_series:
         results.append(tuple([*[serie.find(key).text for key in METADATA_KEYS],
-                            serie.get('id'), str(int(difflib.SequenceMatcher(None, serie.find('title').text.upper(), inputText).ratio() * 100))]))
+                              serie.get('id'), str(int(difflib.SequenceMatcher(None, serie.find('title').text.upper(), inputText).ratio() * 100))]))
     return list(sorted(results, key=lambda serie: serie[-1], reverse=True))
 ]]></expres>
 <page></page>
@@ -306,24 +307,25 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
+    from bs4 import BeautifulSoup
     results = list()
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    selectedSerie = xml.find("./serie/[@id='[results.param7]']")
-    seasons = selectedSerie.find('seasons')
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    selectedSerie = xml.find("serie", {"id": '[results.param7]'})
+    seasons = selectedSerie.find("seasons").find_all("season")
     for season in seasons:
         results.append(
             tuple(list([season.get('id'), season.get('thumb')])))
     return results
+
 ]]></expres>
 <page></page>
-</regex><regex>
+</regex>
+<regex>
 <name>episodes</name>
 <listrepeat><![CDATA[
 <title>[B][COLOR red][results.param1] [season.param1][/COLOR][COLOR white]   [episodes.param1][/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:[episodes.param2]</link>
+<link>$doregex[selectionLinks]</link>
 <year>[results.param3]</year>
 <genre>[results.param4]</genre>
 <info>[results.param2]</info>
@@ -333,34 +335,43 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    selectedSerie = xml.find("./serie/[@id='[results.param7]']")
+    from bs4 import BeautifulSoup
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    selectedSerie = xml.find("serie", {"id": '[results.param7]'})
     seasons = selectedSerie.find('seasons')
-    selectedSeason = seasons.find("season/[@id='[season.param1]']")
+    selectedSeason = seasons.find("season", {"id": [season.param1]})
     episodeLinks = list()
-    for episode in list(sorted(selectedSeason.findall('episode'), key=lambda episode: int(episode.get('id')))):
+    for episode in list(sorted(selectedSeason.find_all('episode'), key=lambda episode: int(episode.get('id')))):
         episodeLinks.append(
             tuple(list([episode.get('name'), episode.get('link')])))
     return episodeLinks
 ]]></expres>
 <page></page>
 </regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + '[episodes.param2]'
+
+]]></expres>
+<page></page>
+</regex>
 <thumbnail>https://i.imgur.com/g412a9y.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
-</menu>
+</item>
 
-<menu>
+<item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]ULTIMOS[/COLOR][COLOR white]                     CAPITULOS AÑADIDOS[/COLOR][/B]</title>
 <thumbnail>https://i.imgur.com/vz7ZRxr.png</thumbnail>
 <fanart>https://i.imgur.com/8L5Aaw9.jpg</fanart>
 <link>http://ignoreme</link>
 <externallink>https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml</externallink>
-</menu>
+</item>
 
-<menu>
+
+<item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]SERIES[/COLOR][COLOR white]                         ALFABETICO[/COLOR][/B]</title>
 <link>$doregex[results]</link>
 <regex>
@@ -377,19 +388,19 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
+    from bs4 import BeautifulSoup
+
+    SERIES_URL = 'https://gitlab.com/stiletto1/s/-/raw/main/s'
     results = list()
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    series = xml.findall('serie')
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    series = soup.find_all('serie')
     METADATA_KEYS = ['title', 'info', 'year', 'genre', 'thumb', 'fanart']
     for serie in list(sorted(series, key=lambda serie: serie.find('title').text)):
         results.append(tuple([*[serie.find(key).text for key in METADATA_KEYS],
-            serie.get('id')]))
+                              serie.get('id')]))
 
     return results
-
 ]]></expres>
 <page></page>
 </regex>
@@ -407,24 +418,25 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
+    from bs4 import BeautifulSoup
     results = list()
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    selectedSerie = xml.find("./serie/[@id='[results.param7]']")
-    seasons = selectedSerie.find('seasons')
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    selectedSerie = xml.find("serie", {"id": '[results.param7]'})
+    seasons = selectedSerie.find("seasons").find_all("season")
     for season in seasons:
         results.append(
             tuple(list([season.get('id'), season.get('thumb')])))
     return results
+
 ]]></expres>
 <page></page>
-</regex><regex>
+</regex>
+<regex>
 <name>episodes</name>
 <listrepeat><![CDATA[
 <title>[B][COLOR red][results.param1] [season.param1][/COLOR][COLOR white]   [episodes.param1][/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:[episodes.param2]</link>
+<link>$doregex[selectionLinks]</link>
 <year>[results.param3]</year>
 <genre>[results.param4]</genre>
 <info>[results.param2]</info>
@@ -434,26 +446,34 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    selectedSerie = xml.find("./serie/[@id='[results.param7]']")
+    from bs4 import BeautifulSoup
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    selectedSerie = xml.find("serie", {"id": '[results.param7]'})
     seasons = selectedSerie.find('seasons')
-    selectedSeason = seasons.find("season/[@id='[season.param1]']")
+    selectedSeason = seasons.find("season", {"id": [season.param1]})
     episodeLinks = list()
-    for episode in list(sorted(selectedSeason.findall('episode'), key=lambda episode: int(episode.get('id')))):
+    for episode in list(sorted(selectedSeason.find_all('episode'), key=lambda episode: int(episode.get('id')))):
         episodeLinks.append(
             tuple(list([episode.get('name'), episode.get('link')])))
     return episodeLinks
 ]]></expres>
 <page></page>
 </regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + '[episodes.param2]'
+
+]]></expres>
+<page></page>
+</regex>
 <thumbnail>https://i.imgur.com/X0npVII.jpg</thumbnail>
 <fanart>https://i.imgur.com/8L5Aaw9.jpg</fanart>
-</menu>
+</item>
 
-<menu>
+<item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]SERIES[/COLOR][COLOR white]                         AÑO[/COLOR][/B]</title>
 <link>$doregex[years]</link>
 <regex>
@@ -467,14 +487,16 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 ]]></listrepeat>
 <expres><![CDATA[#$pyFunction
+
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
+    from bs4 import BeautifulSoup
     years = list()
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    series = xml.findall('serie')
+    results = list()
+    data = makeRequest(
+        'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
+    series = soup.find_all('serie')
     for serie in series:
         years.append(serie.find('year').text)
     return sorted(list(set(years)), reverse=True)
@@ -495,14 +517,13 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
+    from bs4 import BeautifulSoup
     results = list()
-    xml = ElementTree.fromstring(data)
-    yearSeries = xml.findall("./serie/[year='[years.param1]']")
+    year = "[years.param1]"
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    soup = BeautifulSoup(data, "html5lib")
     METADATA_KEYS = ['title', 'info', 'year', 'genre', 'thumb', 'fanart']
-    for serie in list(sorted(yearSeries, key=lambda serie: serie.find('title').text)):
+    for serie in list(filter(lambda it: it.find("year") is not None and it.find("year").text == year, soup.find_all("serie"))):
         results.append(tuple([*[serie.find(key).text for key in METADATA_KEYS],
                             serie.get('id')]))
     return results
@@ -524,24 +545,25 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
+    from bs4 import BeautifulSoup
     results = list()
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    selectedSerie = xml.find("./serie/[@id='[results.param7]']")
-    seasons = selectedSerie.find('seasons')
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    selectedSerie = xml.find("serie", {"id": '[results.param7]'})
+    seasons = selectedSerie.find("seasons").find_all("season")
     for season in seasons:
         results.append(
             tuple(list([season.get('id'), season.get('thumb')])))
     return results
+
 ]]></expres>
 <page></page>
-</regex><regex>
+</regex>
+<regex>
 <name>episodes</name>
 <listrepeat><![CDATA[
 <title>[B][COLOR red][results.param1] [season.param1][/COLOR][COLOR white]   [episodes.param1][/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:[episodes.param2]</link>
+<link>$doregex[selectionLinks]</link>
 <year>[results.param3]</year>
 <genre>[results.param4]</genre>
 <info>[results.param2]</info>
@@ -551,27 +573,35 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    selectedSerie = xml.find("./serie/[@id='[results.param7]']")
+    from bs4 import BeautifulSoup
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    selectedSerie = xml.find("serie", {"id": '[results.param7]'})
     seasons = selectedSerie.find('seasons')
-    selectedSeason = seasons.find("season/[@id='[season.param1]']")
+    selectedSeason = seasons.find("season", {"id": [season.param1]})
     episodeLinks = list()
-    for episode in list(sorted(selectedSeason.findall('episode'), key=lambda episode: int(episode.get('id')))):
+    for episode in list(sorted(selectedSeason.find_all('episode'), key=lambda episode: int(episode.get('id')))):
         episodeLinks.append(
             tuple(list([episode.get('name'), episode.get('link')])))
     return episodeLinks
 ]]></expres>
 <page></page>
 </regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + '[episodes.param2]'
+
+]]></expres>
+<page></page>
+</regex>
 <thumbnail>https://i.imgur.com/eyTvbyC.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
-</menu>
+</item>
 
 
-<menu>
+<item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]SERIES[/COLOR][COLOR white]                         GENERO[/COLOR][/B]</title>
 <link>$doregex[genres]</link>
 <regex>
@@ -586,16 +616,15 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></listrepeat>
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
-    import requests
     import unicodedata
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
+    from bs4 import BeautifulSoup
     genres = list()
-    data = requests.get(SERIES_URL).text
+    data = makeRequest(
+        'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
     data = unicodedata.normalize("NFKD", data).encode(
         "ascii", "ignore").decode("ascii")
-    xml = ElementTree.fromstring(data)
-    series = xml.findall('serie')
+    soup = BeautifulSoup(data, "html5lib")
+    series = soup.find_all('serie')
     for serie in series:
         for genre in serie.find('genre').text.strip().split('. '):
             genres.append(genre)
@@ -616,23 +645,23 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <fanart>[results.param6]</fanart>
 ]]></listrepeat>
 <expres><![CDATA[#$pyFunction
+
 def GetLSProData(page_data, Cookie_Jar, m):
-    import requests
     import unicodedata
-    from xml.etree import ElementTree
+    from bs4 import BeautifulSoup
+    results = list()
     selectedGenre = '[genres.param1]'
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
+    data = makeRequest(
+        'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
     data = unicodedata.normalize("NFKD", data).encode(
         "ascii", "ignore").decode("ascii")
-    results = list()
-    xml = ElementTree.fromstring(data)
-    series = xml.findall('serie')
+    soup = BeautifulSoup(data, "html5lib")
+    series = soup.find_all('serie')
     METADATA_KEYS = ['title', 'info', 'year', 'genre', 'thumb', 'fanart']
     for serie in list(sorted(series, key=lambda serie: serie.find('title').text)):
         if selectedGenre in serie.find('genre').text:
             results.append(tuple([*[serie.find(key).text for key in METADATA_KEYS],
-                                serie.get('id')]))
+                                  serie.get('id')]))
     return results
 
 ]]></expres>
@@ -653,24 +682,25 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
+    from bs4 import BeautifulSoup
     results = list()
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    selectedSerie = xml.find("./serie/[@id='[results.param7]']")
-    seasons = selectedSerie.find('seasons')
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    selectedSerie = xml.find("serie", {"id": '[results.param7]'})
+    seasons = selectedSerie.find("seasons").find_all("season")
     for season in seasons:
         results.append(
             tuple(list([season.get('id'), season.get('thumb')])))
     return results
+
 ]]></expres>
 <page></page>
-</regex><regex>
+</regex>
+<regex>
 <name>episodes</name>
 <listrepeat><![CDATA[
 <title>[B][COLOR red][results.param1] [season.param1][/COLOR][COLOR white]   [episodes.param1][/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:[episodes.param2]</link>
+<link>$doregex[selectionLinks]</link>
 <year>[results.param3]</year>
 <genre>[results.param4]</genre>
 <info>[results.param2]</info>
@@ -680,26 +710,31 @@ def GetLSProData(page_data, Cookie_Jar, m):
 <expres><![CDATA[#$pyFunction
 def GetLSProData(page_data, Cookie_Jar, m):
     import requests
-    from xml.etree import ElementTree
-    SERIES_URL = 'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml'
-    data = requests.get(SERIES_URL).text
-    xml = ElementTree.fromstring(data)
-    selectedSerie = xml.find("./serie/[@id='[results.param7]']")
+    from bs4 import BeautifulSoup
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    selectedSerie = xml.find("serie", {"id": '[results.param7]'})
     seasons = selectedSerie.find('seasons')
-    selectedSeason = seasons.find("season/[@id='[season.param1]']")
+    selectedSeason = seasons.find("season", {"id": [season.param1]})
     episodeLinks = list()
-    for episode in list(sorted(selectedSeason.findall('episode'), key=lambda episode: int(episode.get('id')))):
+    for episode in list(sorted(selectedSeason.find_all('episode'), key=lambda episode: int(episode.get('id')))):
         episodeLinks.append(
             tuple(list([episode.get('name'), episode.get('link')])))
     return episodeLinks
 ]]></expres>
 <page></page>
 </regex>
+<regex>
+<name>selectionLinks</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    return 'plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:' + '[episodes.param2]'
+
+]]></expres>
+<page></page>
+</regex>
 <thumbnail>https://i.imgur.com/E2xELih.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
-</menu>
+</item>
 
-</menus>
-
-
-  
+</items>
