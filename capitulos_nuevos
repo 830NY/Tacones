@@ -2,20 +2,27 @@
 
 <items>
 
+<menu>
+<title>[B][COLOR white]THE BOYS[/COLOR]     [COLOR red] 4 TEMPORADA[/COLOR]    [COLOR white]4 EPISODIO[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:5047d0392eee8900204bd3a93892fc2556be9bd5</link>
+<thumbnail>https://image.tmdb.org/t/p/original/p7dSR9cPgzSNkiUEoxFgu2mvr1L.jpg</thumbnail>
+<fanart>https://image.tmdb.org/t/p/original/7cqKGQMnNabzOpi7qaIgZvQ7NGV.jpg</fanart>
+</menu>
+
 <item>
-<title>[B][COLOR white]EL MARQUES[/COLOR]     [COLOR red]1 TEMPORADA [/COLOR]    [COLOR white]1 EPISODIO[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:d3b7289ae0f94b25094a39cbd9e7cfdb8fd59321</link>
+<title>[B][COLOR white]THE GOOD DOCTOR[/COLOR]     [COLOR red]7 TEMPORADA [/COLOR]    [COLOR white]9 EPISODIO[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:4db27c55ce1992560691122788f831648092ea0c</link>
+<thumbnail>https://image.tmdb.org/t/p/original/hnrzBrLKekwmSNPL4cJXzhdCX0k.jpg</thumbnail>
+<fanart>https://image.tmdb.org/t/p/original/f3cin9kOz4nOrlYEMxGFQhv4bdN.jpg</fanart>
+</item>
+
+<item>
+<title>[B][COLOR white]EL MARQUES[/COLOR]     [COLOR red]1 TEMPORADA [/COLOR]    [COLOR white]5 EPISODIO[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:94891906817c5ec910f9234d4f53f5ea17ff1510</link>
 <thumbnail>https://image.tmdb.org/t/p/original/m7pqSTLIDWtaAyeu4uAQSIanNUR.jpg</thumbnail>
 <fanart>https://image.tmdb.org/t/p/original/qAmUwIENN2CYbjJ793OI9ajnHpx.jpg</fanart>
 </item>
 
-
-<item>
-<title>[B][COLOR white]THE GOOD DOCTOR[/COLOR]     [COLOR red]7 TEMPORADA [/COLOR]    [COLOR white]6 EPISODIO[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:3235520bc7aa5a380dbdcc31c9a7e02497ac021d</link>
-<thumbnail>https://image.tmdb.org/t/p/original/hnrzBrLKekwmSNPL4cJXzhdCX0k.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/f3cin9kOz4nOrlYEMxGFQhv4bdN.jpg</fanart>
-</item>
 
 <item>
 <title>[B][COLOR white]MATERIA OSCURA[/COLOR]     [COLOR red]1 TEMPORADA [/COLOR]    [COLOR white]5 EPISODIO[/COLOR][/B]</title>
@@ -369,10 +376,5 @@
 </item>
 
 
-
-
-
 </items>
-
-
 
