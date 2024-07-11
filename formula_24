@@ -1,43 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <items>
+
 <item>
-<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 1 GRAN PREMIO DE BAHREIN [/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:36f67b232e01003ca138d320d42c55c051443fc5</link>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 12 GRAN PREMIO DE SILVERSTONE[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:V3AU7AX3DSL5RM4VXK7EOU7HNR7H4ZKS</link>
 <thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
 <fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
 </item>
 
 <item>
-<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 2 GRAN PREMIO DE ARABIA SAUDITA [/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:d5c40e31a98ec613b486de9d2a79f583b6298364</link>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 11 GRAN PREMIO DE AUSTRIA[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:AYFSEPODXE433HQN6KPB4WVHLHIMO2Y3</link>
 <thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
 <fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
 </item>
 
 <item>
-<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 3 GRAN PREMIO DE AUSTRALIA [/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:8001b1d02d2253f5fff5877b02cababbd1f3ecc8</link>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 10 GRAN PREMIO DE MONTMELO[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:VQNJARYHHER7KWZMOQHRGYN4WPQBFFSC</link>
+<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
+<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
+</item>
+
+
+<item>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 9 GRAN PREMIO DE CANADA[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:RE5U7PKSGLAAGT764G3Y3ZU7TDXUOXNE</link>
 <thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
 <fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
 </item>
 
 <item>
-<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 4 GRAN PREMIO DE JAPON[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:e118ef22f23c2b6837382d77ca27f1c1ecca5560</link>
-<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
-<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 5 GRAN PREMIO DE CHINA[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:8b9f1f2bd5bea4d712a97705c95358b131bfe3ed</link>
-<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
-<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 6 GRAN PREMIO DE MIAMI[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:2fff14137987ded410d360bd3bc8469dcfaf4cbc</link>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 8 GRAN PREMIO DE MONACO[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:a59e43e2d981925290f0840b9c941ed16313e2e2</link>
 <thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
 <fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
 </item>
@@ -50,13 +45,66 @@
 </item>
 
 <item>
-<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 8 GRAN PREMIO DE MONACO[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:a59e43e2d981925290f0840b9c941ed16313e2e2</link>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 6 GRAN PREMIO DE MIAMI[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:2fff14137987ded410d360bd3bc8469dcfaf4cbc</link>
+<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
+<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
+</item>
+
+<item>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 5 GRAN PREMIO DE CHINA[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:8b9f1f2bd5bea4d712a97705c95358b131bfe3ed</link>
+<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
+<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
+</item>
+
+<item>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 4 GRAN PREMIO DE JAPON[/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:e118ef22f23c2b6837382d77ca27f1c1ecca5560</link>
+<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
+<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
+</item>
+
+
+<item>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 3 GRAN PREMIO DE AUSTRALIA [/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:8001b1d02d2253f5fff5877b02cababbd1f3ecc8</link>
+<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
+<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
+</item>
+
+<item>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 2 GRAN PREMIO DE ARABIA SAUDITA [/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:d5c40e31a98ec613b486de9d2a79f583b6298364</link>
+<thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
+<fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
+</item>
+
+<item>
+<title>[B][COLOR red]FORMULA 1 2024[/COLOR]     [COLOR white] 1 GRAN PREMIO DE BAHREIN [/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:36f67b232e01003ca138d320d42c55c051443fc5</link>
 <thumbnail>https://i.imgur.com/foCL1Ka.png</thumbnail>
 <fanart>https://i.imgur.com/cecGfsO.jpg</fanart>
 </item>
 
 </items>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
