@@ -277,7 +277,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
                   'date', 'genre', 'info', 'links']
 
     matches = list()
-    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml')
+    data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/cine.xml$$KonectasEncKey=Tacones$$')
     soup = BeautifulSoup(data, "html5lib")
 
     inputText = xbmcgui.Dialog().input(
@@ -518,7 +518,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
         if date is not None:
             if item.find('date').text not in years:
                 years.append(item.find('date').text)
-    return list(sorted(years))
+    return list(sorted(years, reverse=True))
 ]]></expres>
 <page></page>
 </regex>
