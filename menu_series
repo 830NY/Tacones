@@ -363,13 +363,56 @@ def GetLSProData(page_data, Cookie_Jar, m):
 </item>
 
 <item>
-<title>[COLOR white]•[/COLOR] [B][COLOR red]ULTIMOS[/COLOR][COLOR white]                     CAPITULOS AÑADIDOS[/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/vz7ZRxr.png</thumbnail>
-<fanart>https://i.imgur.com/8L5Aaw9.jpg</fanart>
-<link>http://ignoreme</link>
-<externallink>https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml</externallink>
-</item>
+<title>[COLOR white]•[/COLOR] [B][COLOR red]ULTIMOS[/COLOR][COLOR white]                             CAPITULOS AÑADIDOS[/COLOR][/B]</title>
+<link>$doregex[novedades]</link>
+<regex>
+<name>novedades</name>
+<listrepeat><![CDATA[
+<title>[B][COLOR red]·[/COLOR] [COLOR white][novedades.param2][/COLOR] [COLOR red]Temporada [novedades.param3][/COLOR] [COLOR white]Episodio [novedades.param4][/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:[novedades.param7]</link>
+<thumbnail>[novedades.param5]</thumbnail>
+<fanart>[novedades.param6]</fanart>
+<info>N/A</info>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import re
+    import requests
+    from bs4 import BeautifulSoup
+    NOVEDADES_URL = 'https://raw.githubusercontent.com/830NY/Tacones/main/capitulos_nuevos'
 
+    novedades = requests.get(NOVEDADES_URL).text
+    data = makeRequest(
+        'https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
+    xml = BeautifulSoup(data, "html5lib")
+    results = list()
+
+    nmatches = re.compile(
+        r'(\d+), (\d+),([^,]+),([^,]+),([^\n]+)').findall(novedades)
+
+    for match in nmatches:
+        sid, tmdbId, name, season, episode = match
+        serie = xml.find("serie", {"id": str(sid)})
+        if serie is None:
+            continue
+        seasons = serie.find('seasons')
+        season = re.compile(r'(\d+)').findall(season)[0]
+        episode = re.compile(r'(\d+)').findall(episode)[0]
+        seasons = serie.find('seasons')
+        selectedSeason = seasons.find("season", {"id": season})
+        selectedEpisode = selectedSeason.find("episode", {"id": episode})
+
+        results.append(
+            tuple(list([sid, name, season, episode, selectedSeason.get(
+                'thumb'), selectedSeason.get('fanart'), selectedEpisode.get('link')])))
+    return results
+
+]]></expres>
+<page>https://gitlab.com/konectas2/tacones/-/raw/feature/novedades/new_novedades</page>
+</regex>
+<thumbnail>https://i.imgur.com/aUcHMhk.png</thumbnail>
+<fanart>https://i.imgur.com/8L5Aaw9.jpg</fanart>
+</item>
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]SERIES[/COLOR][COLOR white]                         ALFABETICO[/COLOR][/B]</title>

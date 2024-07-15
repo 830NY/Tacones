@@ -1,118 +1,24 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-
-<items>
-
-<item>
-<title>[B][COLOR white]EL JEFE DE KINGSTOWN[/COLOR]     [COLOR red] 3 TEMPORADA[/COLOR]    [COLOR white]6 EPISODIO[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:e8963fc1bb6ab743a83c1534bf67a10161be3e6c</link>
-<thumbnail>https://image.tmdb.org/t/p/original/bCoVQckqnqVtiAZua0EO17eI2Y1.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/39bifj2FNytJ2m1cqOBcWMTKgmV.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]VIKINGOS: VALHALLA[/COLOR]     [COLOR red] 3 TEMPORADA[/COLOR]    [COLOR white]8 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:e6825a9348a6e4e0608fac6ccbf88189437d2fb0</link>
-<thumbnail>https://image.tmdb.org/t/p/original/uCr7Ov7Rpzx0c0EPqbPcoEruTYl.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/moCd6S361NnlW59KdCgA3zcat6f.jpg</fanart>
-</item>
-
-
-<item>
-<title>[B][COLOR white]PRESUNTO INOCENTE[/COLOR]     [COLOR red] 1 TEMPORADA[/COLOR]    [COLOR white]6 EPISODIO[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:1a7fef2eee65e3ebaa223e8b850289674caa58d6</link>
-<thumbnail>https://image.tmdb.org/t/p/original/6jYbbIs9D6OWkFnerqyMZ9YCHRI.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/rNrG1E0NLoQnYudBmPGKfcY2RIM.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]LA CASA DEL DRAGON[/COLOR]     [COLOR red] 2 TEMPORADA[/COLOR]    [COLOR white]4 EPISODIO[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:4eaa123822b0e0c91f51f56adc611eb8daafdf6a</link>
-<thumbnail>https://image.tmdb.org/t/p/original/8MaxftF69sEAAD5673vTjIl8yT3.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/cAZOtLjBmDv614zgqv3g9opr2JG.jpg</fanart>
-</item>
-
-
-<item>
-<title>[B][COLOR white]EL TATUADOR DE AUSCHWITZ[/COLOR]     [COLOR red] 1 TEMPORADA[/COLOR]    [COLOR white]3 EPISODIO[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:1bbca21e44d26a8c008d18d0015cd410598cf862</link>
-<thumbnail>https://image.tmdb.org/t/p/original/dohnZtGyvd7bSYX9zncyzCYdC98.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/mxs62JGInE5pQcWa7keHmEpY87P.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]THE BOYS[/COLOR]     [COLOR red] 4 TEMPORADA[/COLOR]    [COLOR white]7 EPISODIO[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:1101ac1c302c0e6ba1faf8b259e7cb5167cac495</link>
-<thumbnail>https://image.tmdb.org/t/p/original/p7dSR9cPgzSNkiUEoxFgu2mvr1L.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/7cqKGQMnNabzOpi7qaIgZvQ7NGV.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]BILYY EL NIÑO[/COLOR]     [COLOR red] 2 TEMPORADA[/COLOR]    [COLOR white]8 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:57926d96152c289c82e4ed50617e7e3e3fde7ba4</link>
-<thumbnail>https://www.themoviedb.org/t/p/original/hwsHUaVw6Cj83951EIQwcVzP45d.jpg</thumbnail>
-<fanart>https://www.themoviedb.org/t/p/original/be8qIckTzjQT5c95hF0WAyt8LPe.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]MATERIA OSCURA[/COLOR]     [COLOR red]1 TEMPORADA [/COLOR]    [COLOR white]9 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:dd17766b847d7dc1e9a91a084fc77c14a3c9fb72</link>
-<thumbnail>https://image.tmdb.org/t/p/original/ohuI1Ik5FsjSazomDqzMlyb6Yv2.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/obS9DJUAvHjm8lDInQsvzynceCu.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]EL MARQUES[/COLOR]     [COLOR red]1 TEMPORADA [/COLOR]    [COLOR white]6 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:221fafbd59012b8366b5f6b8c04aeb30037a96d4</link>
-<thumbnail>https://image.tmdb.org/t/p/original/m7pqSTLIDWtaAyeu4uAQSIanNUR.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/qAmUwIENN2CYbjJ793OI9ajnHpx.jpg</fanart>
-</item>
-
-
-
-
-<item>
-<title>[B][COLOR white]MARBELLA[/COLOR]     [COLOR red]1 TEMPORADA [/COLOR]    [COLOR white]6 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:4519ceb22f2105fe11f2d41d3278a9bf3e05748c</link>
-<thumbnail>https://image.tmdb.org/t/p/original/u2w6pfPNaK6OxICsrtS6MVLOjpV.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/frKXX8EFIJBgAMYG6l4QDqc6UOZ.jpg</fanart>
-</item>
-
-
-<item>
-<title>[B][COLOR white]MR BATES CONTRA CORREOS[/COLOR]     [COLOR red]1 TEMPORADA [/COLOR]    [COLOR white]4 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:914951ac62b3ef1c2aa97c37efd46f456a295b0b</link>
-<thumbnail>https://image.tmdb.org/t/p/original/cuJy9NE50upYqSqmft3zqleW7eb.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/5LF7wUhDEOrpkE0Web0YNccpLvF.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]STAR TREK DISCOVERY[/COLOR]     [COLOR red]5 TEMPORADA [/COLOR]    [COLOR white]10 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:eeabce5467584c490d528da0872046a01be26ec8</link>
-<thumbnail>https://image.tmdb.org/t/p/original/pDLjbZp93qaMhruz52sH0GsfcVr.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/bSlYHSM9m2OuzPX73xU2KWWY1yk.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]THE GOOD DOCTOR[/COLOR]     [COLOR red]7 TEMPORADA [/COLOR]    [COLOR white]10 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:1b1d6b779bbf936f09851444a0fb9796f968ba26</link>
-<thumbnail>https://image.tmdb.org/t/p/original/hnrzBrLKekwmSNPL4cJXzhdCX0k.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/f3cin9kOz4nOrlYEMxGFQhv4bdN.jpg</fanart>
-</item>
-
-<item>
-<title>[B][COLOR white]ENTREVISTA CON EL VAMPIRO[/COLOR]     [COLOR red]2 TEMPORADA [/COLOR]    [COLOR white]8 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:26ffeb849535fd9408d7050e40932cd4ceca415f</link>
-<thumbnail>https://image.tmdb.org/t/p/original/oRdaVDGW3n4SPmWE3IQMfweGb4C.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/nPH6sx66U025kvlmo6GHdOUcHdA.jpg</fanart>
-</item>
-
-
-<item>
-<title>[B][COLOR white]LOS BRIDGERTON[/COLOR]     [COLOR red]3 TEMPORADA [/COLOR]    [COLOR white]8 EPISODIO FINAL[/COLOR][/B]</title>
-<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:9bdbe5df72c7248afd7e322411a36e115cdc6b51</link>
-<thumbnail>https://image.tmdb.org/t/p/original/yz9VEEI2EkmfFQ2nuEXQK59jSWm.jpg</thumbnail>
-<fanart>https://image.tmdb.org/t/p/original/m1rvaIIrDGwSYMt5mWG1WiTndmE.jpg</fanart>
-</item>
-
-</items>
-
+163, 52814,Halo, 2 Temporada, Episodio 5
+115, 197929,El Inmortal, 2 Temporada, Episodio 3
+549, 203667,Reina Roja, 1 Temporada, Episodio 7 FINAL
+548, 126308,Shogun, 1 Temporada, Episodio 2
+544, 197125,Constelacion, 1 Temporada, Episodio 4
+543, 206916,Orphan Black Echoes, 1 Temporada, Episodio 9
+542, 209922,La Mujer en la Pared, 1 Temporada, Episodio 3
+547, 239526,Sueños de Libertad, 1 Temporada, Episodio 6 FINAL
+538, 46518,Los Amos del Aire, 1 Temporada, Episodio 6
+539, 95556,Expatriadas, 1 Temporada, Episodio 6 FINAL
+545, 82452,Avatar La leyenda de Aang, 1 Temporada, Episodio 8 FINAL
+439, 90296,Tokyo Vice, 2 Temporada, Episodio 4
+546, 245015,Picaro el Pequeño Nicolas, 1 Temporada, Episodio 3 FINAL
+526, 194567,The Lazarus Project, 2 Temporada, Episodio 8 FINAL
+444, 46648,True Detective, 4 Temporada, Episodio 6 FINAL
+535, 231811,The Long Shadow, 1 Temporada, Episodio 7
+530, 214216,Galgos, 1 Temporada, Episodio 6 FINAL
+130, 120909,El Turista, 2 Temporada, Episodio 5
+270, 215092,Machos Alfa, 2 Temporada, Episodio 10 FINAL
+299, 128676,Operacion Marea Negra, 3 Temporada, Episodio 5 FINAL
+520, 201352,Vestidas de Azul, 1 Temporada, Episodio 8 FINAL
+521, 103540,Percy Jackson y los dioses del Olimpo, 1 Temporada, Episodio 8 FINAL
+531, 230225,Black Cake, 1 Temporada, Episodio 8 FINAL
+540, 137893,Griselda, 1 Temporada, Episodio 6 FINAL
