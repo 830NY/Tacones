@@ -18,7 +18,197 @@
 <externallink>https://raw.githubusercontent.com/830NY/Tacones/main/menu_cine</externallink>
 </item>
 
+<item>
+<title>[COLOR white]•[/COLOR] [B][COLOR red]DOCUMENTALES[/COLOR][/B]</title>
+<thumbnail>https://i.imgur.com/bcXqj1N.png</thumbnail>
+<fanart>https://i.imgur.com/22egwFT.jpg</fanart>
+<link>$doregex[results]</link>
+<regex>
+<name>results</name>
+<listrepeat><![CDATA[
+<title>[B][COLOR red]DOCUMENTALES[/COLOR]     [COLOR white][UPPERCASE][results.param3][/UPPERCASE][/COLOR][/B]</title>
+<link>$doregex[docu]</link>
+<thumbnail>[results.param2]</thumbnail>
+<fanart>https://i.imgur.com/22egwFT.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    import xbmcaddon
+    import random
+    import xbmcvfs
+    import os
+    import xbmc
+    from bs4 import BeautifulSoup
 
+    class UserAgents(object):
+
+        def __init__(self) -> None:
+            self.ADDON = xbmcaddon.Addon()
+            self.URL = "https://gist.githubusercontent.com/pzb/b4b6f57144aea7827ae4/raw/user-agents.txt"
+            self.translatePath = xbmcvfs.translatePath
+            PROFILE = self.translatePath(self.ADDON.getAddonInfo('Profile'))
+            self.userAgentFile = self.translatePath(
+                os.path.join(PROFILE, "user_agents.txt"))
+            self.usedAgents = []
+            self.userAgents = []
+
+        def prepare(self):
+            self.usedAgents = list(self.get_setting("listUserAgents", []))
+            self.userAgents = list(filter(lambda userAgent: not userAgent in self.usedAgents, [
+                                   userAgent for userAgent in self.downloadFile().splitlines()]))
+
+        def setUserAgent(self, retry=False):
+            if not retry:
+                currentUserAgent = self.get_setting("currentUserAgent", None)
+                if currentUserAgent is not None:
+                    return currentUserAgent
+            self.prepare()
+            selectedUserAgent = random.choice(self.userAgents)
+            self.set_setting("listUserAgents", list(
+                self.get_setting("listUserAgents", [])).append(selectedUserAgent))
+            self.set_setting("currentUserAgent", selectedUserAgent)
+            return selectedUserAgent
+
+        def downloadFile(self):
+            if os.path.isfile(self.userAgentFile):
+                return open(self.userAgentFile).read()
+            data = requests.get(self.URL).text
+            with open(self.userAgentFile, "w") as file:
+                file.write(data)
+            return data
+
+        def get_setting(self, name, default=None):
+            value = self.ADDON.getSetting(name)
+            if not value:
+                return default
+
+            if value.startswith("special://"):
+                value = self.translatePath(value)
+
+            if value == "true":
+                return True
+            elif value == "false":
+                return False
+            else:
+                return value
+
+        def set_setting(self, name, value):
+            try:
+                if isinstance(value, bool):
+                    if value:
+                        value = "true"
+                    else:
+                        value = "false"
+
+                elif isinstance(value, int):
+                    value = str(value)
+
+                self.ADDON.setSetting(name, value)
+
+            except Exception as ex:
+                return None
+
+            return value
+    matches = list()
+    n = 0
+    retryUserAgent = False
+    while (n < 5):
+        try:
+            userAgents = UserAgents()
+            selectedUserAgent = userAgents.setUserAgent(retryUserAgent)
+
+            data = requests.get(
+                "https://www.documaniatv.com/categorias-y-canales.html", headers={
+                    'user-agent':  selectedUserAgent
+                }).text
+            soup = BeautifulSoup(data, "html5lib")
+            for li in soup.find("ul", {"class": "pm-ul-browse-categories list-unstyled thumbnails"}
+                                ).find_all("li"):
+                matches.append((li.find('a').get("href"),
+                               f"{li.find('img').get('src')}|User-Agent={selectedUserAgent}", li.find('h3').text, selectedUserAgent))
+
+            if matches is not None and len(matches) > 0:
+                break
+            else:
+                retryUserAgent = True
+        except Exception as e:
+            retryUserAgent = True
+        n += 1
+        xbmc.sleep(500)
+    return list(sorted(matches, key=lambda docu: docu[2]))
+]]></expres>
+<page></page>
+</regex>
+<regex>
+<name>docu</name>
+<listrepeat><![CDATA[
+<title>[B][COLOR white][docu.param1][/COLOR][/B] [COLOR red]([docu.param3])[/COLOR]</title>
+<link>$doregex[getUrl]</link>
+<thumbnail>[docu.param2]</thumbnail>
+<fanart>https://i.imgur.com/GBaQCvw.jpg</fanart>
+]]></listrepeat>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    from bs4 import BeautifulSoup
+    matches = list()
+    selectedUserAgent = "[results.param4]"
+    data = requests.get(
+        m["page"], headers={
+            'user-agent': selectedUserAgent
+        }).text
+    soup = BeautifulSoup(data, "html5lib")
+    for li in soup.find("ul", {"id": "pm-grid"}).find_all("li"):
+        duration = li.find("span", {"class": "pm-label-duration"}).text
+        title = li.find("h3").text
+        image = f"{li.find('img').get('src')}|User-Agent={selectedUserAgent}"
+        url = li.find('a').get("href")
+        matches.append((title, image, duration, url))
+    return matches
+]]></expres>
+<page>[results.param1]</page>
+<nextpage><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import xbmc
+    import requests, re
+    selectedUserAgent = "[results.param4]"
+    data = requests.get(
+        m['page'], headers={
+            'user-agent': selectedUserAgent
+        }).text
+    matches = re.compile(
+        r'<link rel="next" href="([^"]+)"').findall(data)[0]
+    return matches
+]]></nextpage>
+</regex>
+ <regex>
+<name>getUrl</name>
+<expres><![CDATA[#$pyFunction
+def GetLSProData(page_data, Cookie_Jar, m):
+    import requests
+    import re
+    from urllib.parse import quote
+    url = "[docu.param4]"
+    embed = "https://www.documaniatv.com/embed/"
+    prefix = re.compile(r'_([\d+A-Za-z]+)\.').findall(url)[0]
+    embed_url = embed + prefix
+    headers = {
+        'User-Agent': "[results.param4]",
+        'Referer': embed_url,
+        'Connection': 'keep-alive'
+    }
+    data = requests.get(embed_url, headers=headers).text
+    # Thanks to McKlaus
+    header_str = '&'.join([f'{k}={quote(v)}' for k, v in headers.items()])
+    link = re.compile(
+        r'file:\s*(?:"|\')([^"|\']+)(?:"|\'),\s*image').findall(data)[0]
+    return f"{link}|{header_str}"
+]]></expres>
+<page></page>
+</regex> 
+</item>
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]REPETICIONES[/COLOR][COLOR white]       MOTOR [/COLOR][/B]</title>
