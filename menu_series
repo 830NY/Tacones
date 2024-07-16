@@ -3,7 +3,7 @@
 <items>
 
 <item>
-<title>[COLOR red]•[/COLOR] [B][COLOR white]   ELEMENTUM[/COLOR][COLOR none]     $doregex[elementum]  [/COLOR][/B]</title>
+<title>[COLOR red]•[/COLOR] [B][COLOR white]ELEMENTUM[/COLOR][COLOR none]     $doregex[elementum]  [/COLOR][/B]</title>
 <link>$doregex[install]</link>
 <thumbnail>https://i.imgur.com/d1ad1Is.png</thumbnail>
 <fanart>https://i.imgur.com/mAe2igo.jpg</fanart>
@@ -363,7 +363,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 </item>
 
 <item>
-<title>[COLOR white]•[/COLOR] [B][COLOR red]ULTIMOS[/COLOR][COLOR white]                          CAPITULOS AÑADIDOS[/COLOR][/B]</title>
+<title>[COLOR white]•[/COLOR] [B][COLOR red]ULTIMOS[/COLOR][COLOR white]                     CAPITULOS AÑADIDOS[/COLOR][/B]</title>
 <link>$doregex[novedades]</link>
 <regex>
 <name>novedades</name>
