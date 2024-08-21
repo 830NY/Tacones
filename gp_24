@@ -2,6 +2,22 @@
 <items>
 
 
+
+
+<item>
+<title>[B][COLOR white]MOTO GP 2024[/COLOR]     [COLOR red] 11 GRAN PREMIO DE AUSTRIA[/COLOR]    [COLOR white][/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:cbe3ee631a78935fcfd68a2aad7ffb8f9c2a9e51</link>
+<thumbnail>https://i.imgur.com/4XQ2U5d.png</thumbnail>
+<fanart>https://i.imgur.com/5i9xESb.jpg</fanart>
+</item>
+
+<item>
+<title>[B][COLOR white]MOTO GP 2024[/COLOR]     [COLOR red] 10 GRAN PREMIO DE GRAN BRETAÑA[/COLOR]    [COLOR white][/COLOR][/B]</title>
+<link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:7bdb614a17ef388085f7f003eb4583a5028f8810</link>
+<thumbnail>https://i.imgur.com/4XQ2U5d.png</thumbnail>
+<fanart>https://i.imgur.com/5i9xESb.jpg</fanart>
+</item>
+
 <item>
 <title>[B][COLOR red]MOTO GP 2024[/COLOR]     [COLOR white] 9 GRAN PREMIO DE ALEMANIA[/COLOR][/B]</title>
 <link>plugin://plugin.video.elementum/play?uri=magnet:?xt=urn:btih:74deca5bedf106993b66a73939affc82b0bf3111</link>
