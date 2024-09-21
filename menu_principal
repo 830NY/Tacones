@@ -41,7 +41,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
     import os
     import xbmc
     from bs4 import BeautifulSoup
-
+    HOST = "https://www.documaniatv.com/"
     class UserAgents(object):
 
         def __init__(self) -> None:
@@ -121,13 +121,14 @@ def GetLSProData(page_data, Cookie_Jar, m):
 
             data = requests.get(
                 "https://www.documaniatv.com/categorias-y-canales.html", headers={
-                    'user-agent':  selectedUserAgent
+                    'user-agent':  selectedUserAgent,
+                    "referer": HOST
                 }).text
             soup = BeautifulSoup(data, "html5lib")
             for li in soup.find("ul", {"class": "pm-ul-browse-categories list-unstyled thumbnails"}
                                 ).find_all("li"):
                 matches.append((li.find('a').get("href"),
-                               f"{li.find('img').get('src')}|User-Agent={selectedUserAgent}", li.find('h3').text, selectedUserAgent))
+                               f"{li.find('img').get('src')}|User-Agent={selectedUserAgent}&Referer={HOST}", li.find('h3').text, selectedUserAgent))
 
             if matches is not None and len(matches) > 0:
                 break
