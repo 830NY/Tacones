@@ -566,9 +566,9 @@ def GetLSProData(page_data, Cookie_Jar, m):
     data = makeRequest('https://raw.githubusercontent.com/830NY/tacones_publico/main/series.xml$$KonectasEncKey=Tacones$$')
     soup = BeautifulSoup(data, "html5lib")
     METADATA_KEYS = ['title', 'info', 'year', 'genre', 'thumb', 'fanart']
-    for serie in list(filter(lambda it: it.find("year") is not None and it.find("year").text == year, soup.find_all("serie"))):
+    for serie in list(sorted(filter(lambda it: it.find("year") is not None and it.find("year").text == year, soup.find_all("serie")), key=lambda s: s.find("title").text)):
         results.append(tuple([*[serie.find(key).text for key in METADATA_KEYS],
-                            serie.get('id')]))
+                              serie.get('id')]))
     return results
 
 ]]></expres>
