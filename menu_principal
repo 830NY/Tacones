@@ -192,6 +192,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
     import re
     from urllib.parse import quote
     url = "[docu.param4]"
+    selectedUserAgent = "[results.param4]"
     embed = "https://www.documaniatv.com/embed/"
     prefix = re.compile(r'_([\d+A-Za-z]+)\.').findall(url)[0]
     embed_url = embed + prefix
