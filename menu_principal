@@ -198,15 +198,24 @@ def GetLSProData(page_data, Cookie_Jar, m):
     embed_url = embed + prefix
     headers = {
         'User-Agent': selectedUserAgent,
-        'Connection': 'keep-alive',
+        'Referer': url
     }
-    data = requests.get(embed_url, headers=headers, allow_redirects=False).text
-    headers['Referer'] = embed_url
-    # Thanks to McKlaus
-    header_str = '&'.join([f'{k}={quote(v)}' for k, v in headers.items()])
-    link = re.compile(
-        r'file:\s*(?:"|\')([^"|\']+)(?:"|\'),\s*image').findall(data)[0]
-    return f"{link}|{header_str}"
+    header_str = '&'.join([f'{k}={v}' for k, v in headers.items()])
+    data = requests.get(embed_url, headers=headers).text
+    video_url = re.compile(
+        r'(?s)file:\s*(?:"|\')([^"|\']+)(?:"|\'),\s*image').findall(data)[0]
+
+    vidkey = re.compile(r"\/([A-z\d+]+)\.mp4").search(video_url)
+    headers = {
+        "cookie":
+            "VIDKEY={};".format(vidkey.group(1)),
+        "Referer":
+            url,
+        'User-Agent': selectedUserAgent
+        }
+
+    response = requests.get(video_url, headers=headers, allow_redirects=False)
+    return f"{response.headers.get('location')}|{header_str}"
 ]]></expres>
 <page></page>
 </regex> 
