@@ -327,7 +327,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></expres>
 <page></page>
 </regex>
-<thumbnail>https://i.imgur.com/g412a9y.png</thumbnail>
+<thumbnail>https://imgur.com/Nd3qmi1.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 </item>
 <item>
@@ -395,14 +395,14 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></expres>
 <page></page>
 </regex>
-<thumbnail>https://i.imgur.com/f9tpAmE.png</thumbnail>
+<thumbnail>https://imgur.com/sFNIpGe</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 </item>
 
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]CALIDAD[/COLOR][COLOR white]          MICROHD, BDRIP, 3D, 4K[/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/3I3skgB.png</thumbnail>
+<thumbnail>https://imgur.com/DLtIO8V.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 <link>$doregex[qualities]</link>
 <regex>
@@ -493,7 +493,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]AÑO[/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/eyTvbyC.png</thumbnail>
+<thumbnail>https://imgur.com/TMbMvEJ.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 <link>$doregex[years]</link>
 <regex>
@@ -590,7 +590,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]GENERO[/COLOR][COLOR white]           ACCION, DRAMA, SAGAS, ...[/COLOR][/B]</title> 
-<thumbnail>https://i.imgur.com/E2xELih.png</thumbnail>
+<thumbnail>https://imgur.com/l7RlH6y.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 <link>$doregex[genres]</link>
 <regex>
@@ -689,7 +689,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]CINE DE[/COLOR]    [COLOR white]        CULTO[/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/Hmc87sC.png</thumbnail>
+<thumbnail>https://imgur.com/kWwXtPt.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 <link>$doregex[results]</link>
 <regex>
@@ -758,7 +758,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 </item>
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]CINE DE[/COLOR]    [COLOR white]        ESTRENO[/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/vX0Ycn6.png</thumbnail>
+<thumbnail>https://imgur.com/dyQQgBc.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 <link>$doregex[results]</link>
 <regex>
@@ -828,7 +828,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]CINE DE[/COLOR]    [COLOR white]        MISCELANEA[/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/vIX7Cnq.png</thumbnail>
+<thumbnail>https://imgur.com/xn1XJXM.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 <link>$doregex[results]</link>
 <regex>
