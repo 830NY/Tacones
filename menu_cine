@@ -395,7 +395,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></expres>
 <page></page>
 </regex>
-<thumbnail>https://imgur.com/sFNIpGe</thumbnail>
+<thumbnail>https://imgur.com/sFNIpGe.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 </item>
 
