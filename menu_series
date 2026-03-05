@@ -358,7 +358,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></expres>
 <page></page>
 </regex>
-<thumbnail>https://i.imgur.com/g412a9y.png</thumbnail>
+<thumbnail>https://imgur.com/M8BLF99.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 </item>
 
@@ -410,7 +410,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></expres>
 <page>https://gitlab.com/konectas2/tacones/-/raw/feature/novedades/new_novedades</page>
 </regex>
-<thumbnail>https://i.imgur.com/aUcHMhk.png</thumbnail>
+<thumbnail>https://imgur.com/GtAo7ez.png</thumbnail>
 <fanart>https://i.imgur.com/8L5Aaw9.jpg</fanart>
 </item>
 
@@ -512,7 +512,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></expres>
 <page></page>
 </regex>
-<thumbnail>https://i.imgur.com/X0npVII.jpg</thumbnail>
+<thumbnail>https://imgur.com/FxZYuxq.jpg</thumbnail>
 <fanart>https://i.imgur.com/8L5Aaw9.jpg</fanart>
 </item>
 
@@ -639,7 +639,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></expres>
 <page></page>
 </regex>
-<thumbnail>https://i.imgur.com/eyTvbyC.png</thumbnail>
+<thumbnail>https://imgur.com/i7kXFzO.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 </item>
 
@@ -776,7 +776,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 ]]></expres>
 <page></page>
 </regex>
-<thumbnail>https://i.imgur.com/E2xELih.png</thumbnail>
+<thumbnail>https://imgur.com/jyXrHEB.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 </item>
 
