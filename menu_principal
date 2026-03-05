@@ -12,7 +12,7 @@
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]CINE[/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/gyUWTyK.png</thumbnail>
+<thumbnail>https://imgur.com/6QBK0g0.png</thumbnail>
 <fanart>https://i.imgur.com/R7oMOZO.jpg</fanart>
 <link>http://ignoreme</link>
 <externallink>https://raw.githubusercontent.com/830NY/Tacones/main/menu_cine</externallink>
@@ -20,7 +20,7 @@
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]DOCUMENTALES[/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/bcXqj1N.png</thumbnail>
+<thumbnail>https://imgur.com/NPVxRJU.png</thumbnail>
 <fanart>https://i.imgur.com/22egwFT.jpg</fanart>
 <link>$doregex[results]</link>
 <regex>
@@ -223,7 +223,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]REPETICIONES[/COLOR][COLOR white]       MOTOR [/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/7fME6Vg.png</thumbnail>
+<thumbnail>https://imgur.com/qv1YhgB.png</thumbnail>
 <fanart>https://i.imgur.com/IQjr0ib.jpg</fanart>
 <link>http://ignoreme</link>
 <externallink>https://raw.githubusercontent.com/830NY/Tacones/main/menu_repeticiones</externallink>
@@ -231,7 +231,7 @@ def GetLSProData(page_data, Cookie_Jar, m):
 
 <item>
 <title>[COLOR white]•[/COLOR] [B][COLOR red]SERIES [/COLOR][/B]</title>
-<thumbnail>https://i.imgur.com/ASLlVXw.png</thumbnail>
+<thumbnail>https://imgur.com/nQEuznl</thumbnail>
 <fanart>https://i.imgur.com/8L5Aaw9.jpg</fanart>
 <link>http://ignoreme</link>
 <externallink>https://raw.githubusercontent.com/830NY/Tacones/main/menu_series</externallink>
